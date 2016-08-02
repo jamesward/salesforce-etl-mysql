@@ -16,7 +16,7 @@ function transform(sobject) {
 
 app.use(xmlparser);
 
-let connection = mysql.createConnection(process.env.DATABASE_URL || 'mysql://root@localhost/demo');
+let connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL || 'mysql://root@localhost/demo');
 
 connection.connect();
 
