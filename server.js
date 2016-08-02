@@ -2,7 +2,6 @@ let app = require('express')();
 let xmlparser = require('express-xml-bodyparser')({explicitArray: false});
 let mysql = require('mysql');
 
-
 let tableName = 'contact';
 
 function transform(sobject) {
@@ -13,12 +12,17 @@ function transform(sobject) {
   };
 }
 
-
-app.use(xmlparser);
-
 let connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL || 'mysql://root@localhost/demo');
 
 connection.connect();
+
+// create the table if it doesn't exist
+connection.query(`SELECT * FROM ${tableName}`, function(err) {
+  if ((err != null) && (err.code == 'ER_NO_SUCH_TABLE')) {
+    connection.query('create table contact (id VARCHAR(18) PRIMARY KEY, name VARCHAR(128), email VARCHAR(128))');
+  }
+});
+
 
 function ack() {
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -42,6 +46,8 @@ function nack(errorMessage) {
       </soapenv:Body>
     </soapenv:Envelope>`;
 }
+
+app.use(xmlparser);
 
 app.post('/', function(req, res) {
 

@@ -5,18 +5,11 @@ This sample application shows a simple way to use a Node.js app along with Workf
 
 ### Run on Heroku
 1. Deploy the app: [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
-1. Setup the contact table:
-
-        create table contact (id VARCHAR(18) PRIMARY KEY, name VARCHAR(128), email VARCHAR(128));
 
 
 ### Run Locally
 
 1. Create a local MySQL database named `demo`
-1. Create a table:
-
-        create table contact (id VARCHAR(18) PRIMARY KEY, name VARCHAR(128), email VARCHAR(128));
-
 1. Install the Node.js dependencies:
 
         npm install
