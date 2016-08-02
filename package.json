@@ -1,0 +1,20 @@
+{
+  "name": "salesforce-etl-mysql",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "node node_modules/nodemon/bin/nodemon.js server.js",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": "6.3.x"
+  },
+  "devDependencies": {
+    "nodemon": "latest",
+    "npm-check-updates": "latest"
+  },
+  "dependencies": {
+    "express": "4.14.0",
+    "express-xml-bodyparser": "0.3.0",
+    "mysql": "2.11.1"
+  }
+}
