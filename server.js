@@ -51,6 +51,8 @@ app.use(xmlparser);
 
 app.post('/', function(req, res) {
 
+  connection.connect();
+
   try {
     let sobject = req.body['soapenv:envelope']['soapenv:body']['notifications']['notification']['sobject'];
     let data = transform(sobject);
