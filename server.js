@@ -12,16 +12,13 @@ function transform(sobject) {
   };
 }
 
-let connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL || 'mysql://root@localhost/demo');
-
-connection.connect();
+let pool = mysql.createPool(process.env.CLEARDB_DATABASE_URL || 'mysql://root@localhost/demo');
 
 // create the table if it doesn't exist
-connection.query(`SELECT * FROM ${tableName}`, function(err) {
+pool.query(`SELECT * FROM ${tableName}`, function(err) {
   if ((err != null) && (err.code == 'ER_NO_SUCH_TABLE')) {
-    connection.query('create table contact (id VARCHAR(18) PRIMARY KEY, name VARCHAR(128), email VARCHAR(128))');
+    pool.query('create table contact (id VARCHAR(18) PRIMARY KEY, name VARCHAR(128), email VARCHAR(128))');
   }
-  connection.end();
 });
 
 function ack() {
@@ -51,14 +48,11 @@ app.use(xmlparser);
 
 app.post('/', function(req, res) {
 
-  connection.connect();
-
   try {
     let sobject = req.body['soapenv:envelope']['soapenv:body']['notifications']['notification']['sobject'];
     let data = transform(sobject);
 
-    connection.query(`INSERT INTO ${tableName} SET ? ON DUPLICATE KEY UPDATE ?`, [data, data], function(err) {
-      connection.end();
+    pool.query(`INSERT INTO ${tableName} SET ? ON DUPLICATE KEY UPDATE ?`, [data, data], function(err) {
       if (err != null) {
         console.error('Database error', err.message);
         res.status(500).send(nack(err.message));
@@ -70,7 +64,6 @@ app.post('/', function(req, res) {
   }
   catch (err) {
     console.error('Uncaught error', err);
-    connection.end();
     res.status(500).send(nack(err.message));
   }
 });
