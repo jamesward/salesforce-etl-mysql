@@ -6,7 +6,7 @@
     "start": "node server.js"
   },
   "engines": {
-    "node": "6.3.x"
+    "node": "6.11.1"
   },
   "devDependencies": {
     "nodemon": "latest",
